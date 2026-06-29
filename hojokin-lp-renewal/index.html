@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>補助金活用 × Web集客支援 | Good Laugh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   基本リセット・共通
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body { margin: 0; font-family: "Noto Sans JP", sans-serif; color: #1F2D44; background: #fff; }
+img { display: block; max-width: 100%; }
+a { text-decoration: none; }
+
+/* ============================================================
+   カラー変数
+   ============================================================ */
+:root {
+  --navy: #1F2D44;
+  --navy-sub: #5A6577;
+  --orange: #EF8534;
+  --orange-d: #E5781F;
+  --cream: #FBF6EC;
+  --border: #ECE2CE;
+}
+
+/* ============================================================
+   Header
+   ============================================================ */
+.gl-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #fff;
+  border-bottom: 1px solid #EEE6D6;
+}
+.gl-header__inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 150px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.gl-header__logo img {
+  height: 44px;
+  width: auto;
+}
+.gl-header__nav {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.gl-header__nav a {
+  color: #33415A;
+  font-weight: 700;
+  font-size: 14px;
+  transition: color .15s;
+}
+.gl-header__nav a:hover { color: var(--orange); }
+.gl-header__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #F4924A, #EE7E2E);
+  color: #fff !important;
+  font-weight: 800;
+  font-size: 14px;
+  padding: 11px 24px;
+  border-radius: 999px;
+  white-space: nowrap;
+  box-shadow: 0 6px 16px rgba(239,133,52,.28);
+  transition: transform .15s, box-shadow .15s;
+}
+.gl-header__cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(239,133,52,.38);
+}
+
+/* ============================================================
+   FV
+   ============================================================ */
+.gl-fv {
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+}
+.gl-fv__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 600px;
+}
+
+/* 左：オレンジ */
+.gl-fv__copy {
+  background: linear-gradient(155deg, #F59A52 0%, #EE7B2C 52%, #E97016 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 72px 80px;
+  color: #fff;
+}
+.gl-fv__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: #FFE7B0;
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: .04em;
+  font-family: "Zen Kaku Gothic New", sans-serif;
+}
+.gl-fv__eyebrow::before,
+.gl-fv__eyebrow::after {
+  content: "";
+  width: 2px;
+  height: 18px;
+  background: #FFD98A;
+  display: block;
+}
+.gl-fv__eyebrow::before { transform: rotate(-22deg); }
+.gl-fv__eyebrow::after  { transform: rotate(22deg); }
+
+.gl-fv__title {
+  font-family: "Zen Kaku Gothic New", sans-serif;
+  font-weight: 900;
+  font-size: clamp(26px, 2.3vw, 34px);
+  line-height: 1.55;
+  letter-spacing: .01em;
+  margin: 20px 0 0;
+  color: #fff;
+}
+.gl-fv__title > span { display: block; }
+.gl-fv__title > span.nowrap { white-space: nowrap; }
+.gl-fv__marker {
+  background: linear-gradient(transparent 56%, #FCEAAE 56%);
+  color: #1F2D44;
+  padding: 0 4px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.gl-fv__lead {
+  font-size: 15.5px;
+  line-height: 1.95;
+  color: rgba(255,255,255,.95);
+  margin: 20px 0 0;
+}
+
+.gl-fv__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 32px;
+  align-self: center;
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  color: #1F2D44;
+  font-family: "Zen Kaku Gothic New", sans-serif;
+  font-weight: 900;
+  font-size: 19px;
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 20px 32px;
+  border-radius: 999px;
+  box-shadow: 0 10px 24px rgba(60,30,0,.24);
+  animation: glCtaPulse 2.4s ease-in-out infinite;
+  transition: transform .15s, box-shadow .15s;
+}
+@keyframes glCtaPulse {
+  0%,100% { box-shadow: 0 10px 24px rgba(60,30,0,.22), 0 0 0 0 rgba(255,255,255,.5); }
+  50%      { box-shadow: 0 10px 24px rgba(60,30,0,.22), 0 0 0 12px rgba(255,255,255,0); }
+}
+.gl-fv__cta:hover { transform: translateY(-2px); box-shadow: 0 16px 32px rgba(60,30,0,.3); animation: none; }
+.gl-fv__cta .gl-fv__arrow { font-size: 18px; color: #E15E08; }
+
+.gl-fv__textlink {
+  margin-top: 14px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(255,255,255,.6);
+  padding-bottom: 2px;
+}
+.gl-fv__textlink:hover { color: #FFE7B0; border-color: #FFE7B0; }
+
+.gl-reassure {
+  font-size: 12.5px;
+  color: rgba(255,255,255,.82);
+  margin: 10px 0 0;
+  line-height: 1.6;
+}
+.gl-reassure--light { color: #9DB0CC; }
+
+.gl-fv__trust {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 20px;
+  margin-top: 28px;
+}
+.gl-fv__trust-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 700;
+}
+.gl-fv__check {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.26);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.gl-fv__note {
+  margin: 20px 0 0;
+  font-size: 11px;
+  line-height: 1.7;
+  color: rgba(255,255,255,.65);
+}
+
+/* 右：写真 */
+.gl-fv__photo {
+  position: relative;
+  min-height: 100%;
+}
+.gl-fv__photo-frame {
+  position: absolute;
+  inset: 0;
+}
+.gl-fv__photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 60% 30%;
+}
+
+/* 下部 波 */
+.gl-fv__wave {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 72px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ============================================================
+   LP 本体共通
+   ============================================================ */
+.gl-lp { color: var(--navy); background: #fff; }
+
+.gl-sec { padding: 96px 0; }
+.gl-sec--cream { background: var(--cream); }
+.gl-sec--yellow { background: #FDF6DC; }
+.gl-sec--orange-bg {
+  background: linear-gradient(155deg, #F59A52 0%, #EE7B2C 55%, #E97016 100%);
+}
+.gl-sec--navy { background: linear-gradient(165deg, #26354F, #1A2740); }
+
+.gl-wrap {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.gl-head {
+  text-align: center;
+  margin: 0 auto 56px;
+  max-width: 720px;
+}
+.gl-eyebrow2 {
+  display: inline-block;
+  color: var(--orange);
+  font-weight: 800;
+  letter-spacing: .16em;
+  font-size: 12px;
+}
+.gl-h2 {
+  font-family: "Zen Kaku Gothic New", sans-serif;
+  font-weight: 900;
+  font-size: clamp(26px, 2.8vw, 34px);
+  line-height: 1.45;
+  color: var(--navy);
+  margin: 10px 0 0;
+}
+.gl-sub {
+  color: #5A6577;
+  font-size: 15px;
+  line-height: 1.9;
+  margin: 14px auto 0;
+}
+.gl-fineprint {
+  font-size: 11.5px;
+  color: #9AA3B2;
+  line-height: 1.7;
+  margin: 20px 0 0;
+}
+
+/* セクション内CTA */
+.gl-cta-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 52px;
+}
+.gl-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: linear-gradient(180deg, #F7912F, #E96A12);
+  color: #fff !important;
+  font-family: "Zen Kaku Gothic New", sans-serif;
+  font-weight: 900;
+  font-size: 20px;
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 22px 52px;
+  border-radius: 999px;
+  box-shadow: 0 16px 32px rgba(233,106,18,.42);
+  transition: transform .15s, box-shadow .15s, filter .15s;
+}
+.gl-btn:hover { transform: translateY(-2px); filter: brightness(1.04); box-shadow: 0 20px 40px rgba(233,106,18,.56); }
+.gl-btn__arrow { font-size: 17px; }
+
+/* ============================================================
+   1. 実質負担の目安
+   ============================================================ */
+.gl-cost {
+  background: var(--cream);
+  border: 1px solid #EEE3CF;
+  border-radius: 20px;
+  padding: 44px 48px;
+}
+.gl-cost__label {
+  font-weight: 700;
+  color: #3A4861;
+  font-size: 14.5px;
+  margin: 0 0 16px;
+}
+.gl-cost__bar {
+  display: flex;
+  height: 62px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.04);
+}
+.gl-cost__cover {
+  flex: 2;
+  background: linear-gradient(180deg, #F39A4F, #EF8534);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+}
+.gl-cost__self {
+  flex: 1;
+  background: #26354F;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+}
+.gl-cost__legend {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  font-size: 13px;
+}
+.gl-cost__cards {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+.gl-cost__card {
+  flex: 1;
+  min-width: 220px;
+  background: #fff;
+  border: 1px solid #EEE3CF;
+  border-radius: 12px;
+  padding: 20px 22px;
+}
+.gl-cost__card em {
+  display: block;
+  font-style: normal;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  color: #A6896A;
+  margin-bottom: 6px;
+}
+.gl-cost__card b {
+  font-family: "Zen Kaku Gothic New", sans-serif;
+  font-weight: 900;
+  font-size: 20px;
+  color: var(--navy);
+  display: block;
+}
+.gl-cost__card span {
+  font-size: 12.5px;
+  color: #8A93A4;
+  margin-top: 4px;
+  display: block;
+}
+.gl-cost__card--accent {
+  background: linear-gradient(180deg, #FFF3E0, #FDE9CC);
+  border-color: #F4D29A;
+}
+.gl-cost__card--accent b { color: #C9761E; }
+
+/* ============================================================
+   2. 対象チェック
+   ============================================================ */
+
+/* オレンジ背景上の見出し */
+.gl-sec--orange-bg .gl-check-head {
+  text-align: center;
+  margin: 0 auto 40px;
+}
+.gl-check-head__label {
+  display: inline-block;
+  background: rgba(255,255,255,.18);
+  color: rgba(255,255,255,.85);
+  font-weight: 800;
+  font-size: 11.5px;
+  letter-spacing: .16em;
+  padding: 6px 18px;
+  border-radius: 999px;
+}
+.gl-check-head__title {
+  font-family: "Zen Kaku Gothic New", sans-serif;
+  font-weight: 900;
+  font-size: clamp(22px, 2.6vw, 32px);
+  line-height: 1.45;
+  color: #fff;
+  margin: 12px 0 0;
+}
+.gl-check-head__sub {
+  color: rgba(255,255,255,.88);
+  font-size: 15px;
+  line-height: 1.85;
+  margin: 12px auto 0;
+  max-width: 600px;
+}
+
+.gl-check {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+.gl-check__list {
+  background: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 24px;
+  box-shadow: 0 8px 28px rgba(0,0,0,.12);
+}
+.gl-check__item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 17px 8px;
+  border-bottom: 1px solid #F0E8DA;
+}
+.gl-check__item:last-child { border-bottom: none; }
+.gl-check__mark {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: #FDE6C7;
+  color: #D9821F;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+}
+.gl-check__txt {
+  font-size: 15.5px;
+  font-weight: 500;
+  color: #1F2D44;
+  line-height: 1.55;
+}
+.gl-check__result {
+  background: linear-gradient(160deg, #26354F, #1C2A41);
+  border-radius: 20px;
+  padding: 36px 28px;
+  color: #fff;
+  box-shadow: 0 12px 32px rgba(0,0,0,.22);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.gl-check__result h3 {
+  font-family: "Zen Kaku Gothic New", sans-serif;
+  font-weight: 900;
+  font-size: 20px;
+  line-height: 1.55;
+  margin: 10px 0 10px;
+}
+.gl-check__result p {
+  font-size: 13.5px;
+  line-height: 1.85;
+  color: #B8C8DC;
+  margin: 0 0 24px;
+}
+.gl-check__result .gl-btn {
+  width: 100%;
+  font-size: 16px;
+  padding: 18px 20px;
+  box-shadow: none;
+}
+.gl-check__result .gl-btn:hover {
+  box-shadow: none;
+}
+.gl-check__eyebrow {
+  display: inline-block;
+  color: rgba(255,255,255,.55);
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: .14em;
+}
+
+/* ============================================================
+   3. Web施策カード
+   ============================================================ */
+.gl-grid3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.gl-card {
+  background: #FCFAF4;
+  border: 1px solid #EEE6D6;
+  border-radius: 16px;
+  padding: 32px 24px 28px;
+  text-align: center;
+  transition: transform .15s, box-shadow .15s;
+}
+.gl-card:hover { transform: translateY(-4px); box-shadow: 0 14px 28px rgba(31,45,68,.08); }
+.gl-card__ic {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+.gl-card__ic svg { width: 34px; height: 34px; display: block; }
+.gl-card h3 {
+  font-family: "Zen Kaku Gothic New", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #1A2B42;
+  line-height: 1.55;
+  margin: 0;
+}
+.gl-card p {
+  font-size: 13.5px;
+  color: #556070;
+  line-height: 1.8;
+  margin: 10px 0 0;
+}
+
+/* ============================================================
+   4. 流れ
+   ============================================================ */
+.gl-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.gl-flow__item {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 22px 28px;
+  box-shadow: 0 4px 14px rgba(31,45,68,.05);
+}
+.gl-flow__no {
+  flex: none;
+  width: 58px;
+  height: 58px;
+  border-radius: 14px;
+  background: #FDE6C7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.gl-flow__no small {
+  font-size: 10px;
+  font-weight: 800;
+  color: #C9761E;
+  letter-spacing: .05em;
+}
+.gl-flow__no b {
+  font-family: "Zen Kaku Gothic New", sans-serif;
+  font-size: 26px;
+  font-weight: 900;
+  color: #D96A10;
+  line-height: 1;
+}
+.gl-flow__no small { color: #B85C0C; }
+.gl-flow__item h3 {
+  font-family: "Zen Kaku Gothic New", sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: #1A2B42;
+  margin: 0;
+}
+.gl-flow__item p {
+  font-size: 14px;
+  color: #4D5A6E;
+  line-height: 1.8;
+  margin: 4px 0 0;
+}
+
+/* ============================================================
+   5. 選ばれる理由
+   ============================================================ */
+.gl-reason {
+  border: 1px solid #E8DFC8;
+  border-radius: 18px;
+  padding: 36px 28px 32px;
+  background: #FDF8E8;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.gl-reason__no {
+  font-family: "Zen Kaku Gothic New", sans-serif;
+  font-weight: 900;
+  font-size: 40px;
+  color: #F0C060;
+  line-height: 1;
+}
+.gl-reason h3 {
+  font-family: "Zen Kaku Gothic New", sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  color: #1A2B42;
+  margin: 14px 0 10px;
+  line-height: 1.55;
+}
+.gl-reason p { font-size: 13.5px; color: #556070; line-height: 1.9; margin: 0; }
+
+/* ============================================================
+   6. 事例
+   ============================================================ */
+.gl-sec--orange-bg .gl-h2 { color: #fff; }
+.gl-sec--orange-bg .gl-eyebrow2 { color: rgba(255,255,255,.8); }
+.gl-sec--orange-bg .gl-sub { color: rgba(255,255,255,.92); }
+.gl-sec--orange-bg .gl-fineprint { color: rgba(255,255,255,.6); }
+
+.gl-case {
+  background: #fff;
+  border: none;
+  border-radius: 18px;
+  padding: 28px 26px;
+  box-shadow: 0 6px 22px rgba(0,0,0,.10);
+}
+.gl-case__tag {
+  display: inline-block;
+  background: linear-gradient(180deg, #FDE6C7, #FBD9A8);
+  color: #C9761E;
+  font-weight: 800;
+  font-size: 12.5px;
+  padding: 5px 14px;
+  border-radius: 999px;
+}
+.gl-case__rows { margin-top: 18px; display: flex; flex-direction: column; gap: 12px; }
+.gl-case__row { display: flex; gap: 12px; }
+.gl-case__k {
+  flex: none;
+  width: 80px;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #A6896A;
+  letter-spacing: .02em;
+  padding-top: 2px;
+}
+.gl-case__v { font-size: 13.5px; color: #34425A; line-height: 1.7; font-weight: 500; }
+.gl-case__v--eff { color: var(--navy); font-weight: 700; }
+
+/* ============================================================
+   7. FAQ
+   ============================================================ */
+.gl-faq {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.gl-faq__item {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #FCFAF4;
+  overflow: hidden;
+}
+.gl-faq__item summary {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 24px;
+  cursor: pointer;
+  list-style: none;
+  font-family: "Zen Kaku Gothic New", sans-serif;
+  font-weight: 700;
+  font-size: 15.5px;
+  color: var(--navy);
+  line-height: 1.6;
+}
+.gl-faq__item summary::-webkit-details-marker { display: none; }
+.gl-faq__q {
+  flex: none;
+  font-family: "Zen Kaku Gothic New", sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--orange);
+}
+.gl-faq__plus {
+  flex: none;
+  margin-left: auto;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid #E2D8C4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9AA3B2;
+  font-size: 16px;
+  transition: transform .2s;
+}
+.gl-faq__item[open] .gl-faq__plus { transform: rotate(45deg); }
+.gl-faq__a {
+  padding: 0 24px 22px 54px;
+  font-size: 14px;
+  color: #5C6A7F;
+  line-height: 1.95;
+}
+
+/* ============================================================
+   8. 最終CTA
+   ============================================================ */
+.gl-final {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.gl-final__badge {
+  display: inline-block;
+  background: rgba(255,255,255,.1);
+  color: #FBD98F;
+  font-weight: 700;
+  font-size: 12.5px;
+  padding: 7px 16px;
+  border-radius: 999px;
+}
+.gl-final h2 {
+  font-family: "Zen Kaku Gothic New", sans-serif;
+  font-weight: 900;
+  font-size: clamp(26px, 3vw, 34px);
+  color: #fff;
+  line-height: 1.55;
+  margin: 20px 0 0;
+}
+.gl-final h2 mark {
+  background: linear-gradient(transparent 58%, rgba(251,217,143,.42) 58%);
+  color: #fff;
+}
+.gl-final p {
+  color: #C2CDDE;
+  font-size: 15px;
+  line-height: 1.95;
+  margin: 18px auto 0;
+  max-width: 520px;
+}
+.gl-final .gl-btn {
+  box-shadow: none;
+}
+.gl-final .gl-btn:hover {
+  box-shadow: none;
+}
+.gl-final__textlink {
+  color: #C2CDDE;
+  font-weight: 700;
+  font-size: 14px;
+  border-bottom: 2px solid rgba(255,255,255,.3);
+  padding-bottom: 3px;
+}
+.gl-final__textlink:hover { color: #fff; border-color: #fff; }
+.gl-final__note {
+  font-size: 11.5px;
+  color: #7E8DA6;
+  line-height: 1.85;
+  margin: 36px auto 0;
+  max-width: 580px;
+}
+
+/* ============================================================
+   9. Footer
+   ============================================================ */
+.gl-footer {
+  background: #16223A;
+  color: #AEB9CC;
+  padding: 56px 0 36px;
+}
+.gl-footer__inner {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: space-between;
+}
+.gl-footer__brand img { height: 40px; width: auto; opacity: .95; }
+.gl-footer__brand p {
+  font-size: 13px;
+  line-height: 1.9;
+  color: #8C99B0;
+  margin: 14px 0 0;
+  max-width: 280px;
+}
+.gl-footer__cols { display: flex; gap: 52px; flex-wrap: wrap; }
+.gl-footer__col h4 {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 12px;
+  letter-spacing: .04em;
+}
+.gl-footer__col a {
+  display: block;
+  font-size: 13px;
+  color: #AEB9CC;
+  margin-bottom: 9px;
+  transition: color .15s;
+}
+.gl-footer__col a:hover { color: var(--orange); }
+.gl-footer__bottom {
+  max-width: 1140px;
+  margin: 40px auto 0;
+  padding: 22px 24px 0;
+  border-top: 1px solid rgba(255,255,255,.08);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 11.5px;
+  color: #71809A;
+}
+
+/* ============================================================
+   レスポンシブ：960px以下
+   ============================================================ */
+@media (max-width: 960px) {
+  .gl-header__inner { padding: 0 20px; height: 60px; }
+  .gl-header__logo img { height: 36px; }
+  .gl-header__nav { display: none; }
+
+  .gl-fv__inner { grid-template-columns: 1fr; }
+  .gl-fv__copy {
+    order: 1;
+    padding: 48px 20px 56px;
+    align-items: center;
+    text-align: center;
+  }
+  .gl-fv__photo { order: 2; min-height: 280px; height: 280px; }
+  .gl-fv__photo-frame img { object-position: 54% 28%; }
+
+  .gl-fv__title { font-size: clamp(22px, 6vw, 28px); }
+  .gl-fv__lead { font-size: 14.5px; }
+  .gl-fv__cta { width: 100%; font-size: 17px; padding: 20px 16px; }
+  .gl-fv__eyebrow { font-size: 14px; }
+  .gl-fv__trust { justify-content: center; }
+
+  .gl-sec { padding: 60px 0; }
+  .gl-wrap { padding: 0 20px; }
+
+  .gl-card__ic { width: 60px; height: 60px; border-radius: 15px; }
+  .gl-card__ic svg { width: 28px; height: 28px; }
+  .gl-cost { padding: 28px 20px; }
+  .gl-check { grid-template-columns: 1fr; }
+  .gl-check__result { position: static; margin-top: 0; }
+  .gl-check-head__title { font-size: clamp(20px, 5.5vw, 26px); }
+  .gl-grid3 { grid-template-columns: 1fr; }
+  .gl-flow__item { gap: 16px; padding: 18px 20px; }
+  .gl-footer__inner { flex-direction: column; gap: 28px; padding: 0 20px; }
+  .gl-footer__bottom { flex-direction: column; padding: 18px 20px 0; }
+  .gl-btn { width: 100%; font-size: 17px; padding: 20px 16px; }
+}
+
+@media (max-width: 420px) {
+  .gl-fv__title { font-size: 24px; }
+  .gl-fv__cta { font-size: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Header ===== -->
+<header class="gl-header">
+  <div class="gl-header__inner">
+    <a class="gl-header__logo" href="#" aria-label="Good Laugh">
+      <img src="assets/logo.png" alt="Good Laugh">
+    </a>
+    <nav class="gl-header__nav">
+      <a href="#">サービス内容</a>
+      <a href="#">事例紹介</a>
+      <a href="#">補助金について</a>
+      <a href="#">よくあるご質問</a>
+      <a class="gl-header__cta" href="#">無料で相談する</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== FV ===== -->
+<section class="gl-fv">
+  <div class="gl-fv__inner">
+
+    <!-- 左：コピー -->
+    <div class="gl-fv__copy">
+      <p class="gl-fv__eyebrow">補助金活用 × Web集客支援</p>
+
+      <h1 class="gl-fv__title">
+        <span>補助金を活用して</span>
+        <span class="nowrap"><span class="gl-fv__marker">ホームページ制作・Web集客</span>の</span>
+        <span>自己負担を抑える</span>
+      </h1>
+
+      <p class="gl-fv__lead">
+        申請サポートから、制作後のSEO/MEO対策まで一括支援。<br>
+        まずは自社が対象になるか無料で確認できます。
+      </p>
+
+      <a class="gl-fv__cta" href="#">
+        自社が対象か無料でチェックする
+        <span class="gl-fv__arrow">→</span>
+      </a>
+      <p class="gl-reassure">まずは対象確認だけでもOK。無理な営業はありません。</p>
+
+      <div class="gl-fv__trust">
+        <span class="gl-fv__trust-item"><span class="gl-fv__check">✓</span>補助金活用・条件により異なります</span>
+        <span class="gl-fv__trust-item"><span class="gl-fv__check">✓</span>採択後の制作相談OK</span>
+        <span class="gl-fv__trust-item"><span class="gl-fv__check">✓</span>企業サイト・LP対応</span>
+      </div>
+    </div>
+
+    <!-- 右：写真 -->
+    <div class="gl-fv__photo">
+      <div class="gl-fv__photo-frame">
+        <img src="assets/hero-photo.png" alt="補助金とWeb集客の打ち合わせの様子">
+      </div>
+    </div>
+
+  </div>
+
+  <svg class="gl-fv__wave" viewBox="0 0 1440 72" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,36 C280,72 520,6 740,26 C980,50 1160,80 1440,40 L1440,72 L0,72 Z" fill="#ffffff"></path>
+  </svg>
+</section>
+
+<main class="gl-lp">
+
+  <!-- ===== 1. 実質負担の目安 ===== -->
+  <section class="gl-sec">
+    <div class="gl-wrap">
+      <div class="gl-head">
+        <span class="gl-eyebrow2">COST IMAGE</span>
+        <h2 class="gl-h2">補助金を使うと、自己負担はいくら？</h2>
+        <p class="gl-sub">補助金を活用すれば、制作費の自己負担を抑えられる可能性があります。下図は費用イメージです。</p>
+      </div>
+      <div class="gl-cost">
+        <p class="gl-cost__label">制作・Web施策の費用イメージ</p>
+        <div class="gl-cost__bar">
+          <div class="gl-cost__cover">補助金でカバー</div>
+          <div class="gl-cost__self">自己負担</div>
+        </div>
+        <div class="gl-cost__legend">
+          <span style="color:#C9761E; font-weight:700;">◀ 補助対象となる部分</span>
+          <span style="color:#3A4861; font-weight:700;">抑えたい部分 ▶</span>
+        </div>
+        <div class="gl-cost__cards">
+          <div class="gl-cost__card">
+            <em>制作費</em>
+            <b>個別にお見積もり</b>
+            <span>ご要望・規模に合わせて算出</span>
+          </div>
+          <div class="gl-cost__card gl-cost__card--accent">
+            <em>補助金</em>
+            <b>条件により異なります</b>
+            <span>使える制度を無料で確認</span>
+          </div>
+          <div class="gl-cost__card">
+            <em>自己負担</em>
+            <b>無料相談でご案内</b>
+            <span>負担を抑えて始められます</span>
+          </div>
+        </div>
+      </div>
+      <p class="gl-fineprint">※補助金の採択・支給を保証するものではありません。制度の内容・対象・補助率・上限額は年度や事業内容など条件により異なります。対象経費・補助率は申請内容により異なります。本図は費用イメージであり、特定の金額・補助額を示すものではありません。</p>
+      <div class="gl-cta-wrap">
+        <a class="gl-btn" href="#">自社が対象か無料でチェックする <span class="gl-btn__arrow">→</span></a>
+        <p class="gl-reassure" style="color:#8A93A4;">相談だけでもOK。対象確認だけのご利用も可能です。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 2. 対象チェック ===== -->
+  <section class="gl-sec gl-sec--orange-bg">
+    <div class="gl-wrap">
+      <div class="gl-check-head">
+        <span class="gl-check-head__label">ELIGIBILITY CHECK</span>
+        <h2 class="gl-check-head__title">まずは「自社が対象か」をチェック</h2>
+        <p class="gl-check-head__sub">当てはまる項目はありますか？ ひとつでも該当すれば、補助金活用の対象になる可能性があります。</p>
+      </div>
+      <div class="gl-check">
+        <div class="gl-check__list">
+          <div class="gl-check__item"><span class="gl-check__mark">✓</span><span class="gl-check__txt">中小企業・小規模事業者・個人事業主である</span></div>
+          <div class="gl-check__item"><span class="gl-check__mark">✓</span><span class="gl-check__txt">ホームページを新しく作りたい／作り直したい</span></div>
+          <div class="gl-check__item"><span class="gl-check__mark">✓</span><span class="gl-check__txt">Web集客（SEO・MEO・広告など）を強化したい</span></div>
+          <div class="gl-check__item"><span class="gl-check__mark">✓</span><span class="gl-check__txt">費用の自己負担をできるだけ抑えたい</span></div>
+          <div class="gl-check__item"><span class="gl-check__mark">✓</span><span class="gl-check__txt">補助金が使えるか分からず相談したい</span></div>
+        </div>
+        <div class="gl-check__result">
+          <span class="gl-check__eyebrow">CHECK</span>
+          <h3>当てはまる項目はありましたか？</h3>
+          <p>ひとつでも該当すれば、補助金活用を検討する価値があります。どの制度が使えるかは無料相談で個別にご案内します。</p>
+          <a class="gl-btn" href="#">自社が対象か無料でチェックする <span class="gl-btn__arrow">→</span></a>
+          <p class="gl-reassure gl-reassure--light" style="text-align:center; margin-top:14px;">相談だけでもOK。無理な営業はありません。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 3. 補助金でできるWeb施策 ===== -->
+  <section class="gl-sec">
+    <div class="gl-wrap">
+      <div class="gl-head">
+        <span class="gl-eyebrow2">WHAT YOU CAN DO</span>
+        <h2 class="gl-h2">補助金でできるWeb施策</h2>
+        <p class="gl-sub">ホームページ制作だけでなく、その後の集客施策まで幅広く活用いただけます。</p>
+      </div>
+      <div class="gl-grid3">
+        <!-- 1. ホームページ新規制作・リニューアル：PCモニター -->
+        <div class="gl-card">
+          <div class="gl-card__ic" style="background:#FDEAD3;">
+            <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="4" width="22" height="15" rx="2" stroke="#EF8534" stroke-width="1.8" stroke-linejoin="round"/>
+              <path d="M3 14h22" stroke="#EF8534" stroke-width="1.6"/>
+              <circle cx="14" cy="16.5" r="0.8" fill="#EF8534"/>
+              <path d="M10 23h8" stroke="#EF8534" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M14 19v4" stroke="#EF8534" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M7 8h8M7 11h5" stroke="#EF8534" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>ホームページ新規制作・リニューアル</h3>
+          <p>信頼感のある企業サイトを、補助金を活用して制作できます。</p>
+        </div>
+        <!-- 2. LP制作：マウスカーソル＋ターゲット -->
+        <div class="gl-card">
+          <div class="gl-card__ic" style="background:#E7EEF8;">
+            <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="8" stroke="#3E5478" stroke-width="1.8"/>
+              <circle cx="12" cy="12" r="4.5" stroke="#3E5478" stroke-width="1.6"/>
+              <circle cx="12" cy="12" r="1.5" fill="#3E5478"/>
+              <path d="M17 17l5 5" stroke="#3E5478" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>ランディングページ（LP）制作</h3>
+          <p>問い合わせ・予約につながる集客用LPを制作します。</p>
+        </div>
+        <!-- 3. SEO対策：虫眼鏡＋グラフ -->
+        <div class="gl-card">
+          <div class="gl-card__ic" style="background:#FDEAD3;">
+            <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="7.5" stroke="#EF8534" stroke-width="1.8"/>
+              <path d="M17.5 17.5l5 5" stroke="#EF8534" stroke-width="2" stroke-linecap="round"/>
+              <path d="M8.5 14l2 2 3.5-4" stroke="#EF8534" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>SEO対策（検索からの集客）</h3>
+          <p>検索結果から自然に見つけてもらえる状態を整えます。</p>
+        </div>
+        <!-- 4. MEO対策：地図ピン -->
+        <div class="gl-card">
+          <div class="gl-card__ic" style="background:#E7EEF8;">
+            <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14 3C10.13 3 7 6.13 7 10c0 5.25 7 15 7 15s7-9.75 7-15c0-3.87-3.13-7-7-7z" stroke="#3E5478" stroke-width="1.8" stroke-linejoin="round"/>
+              <circle cx="14" cy="10" r="2.5" stroke="#3E5478" stroke-width="1.6"/>
+            </svg>
+          </div>
+          <h3>MEO対策（Googleマップ対策）</h3>
+          <p>店舗の来店につながるマップ上の見え方を強化します。</p>
+        </div>
+        <!-- 5. 予約・問い合わせ：カレンダー＋吹き出し -->
+        <div class="gl-card">
+          <div class="gl-card__ic" style="background:#FDEAD3;">
+            <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3.5" y="6" width="17" height="16" rx="2" stroke="#EF8534" stroke-width="1.8" stroke-linejoin="round"/>
+              <path d="M3.5 10.5h17" stroke="#EF8534" stroke-width="1.6"/>
+              <path d="M8 4v4M16 4v4" stroke="#EF8534" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M7.5 14.5h9M7.5 18h6" stroke="#EF8534" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M21 14c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2h-1v2l-2-2" stroke="#EF8534" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>予約・問い合わせ導線の整備</h3>
+          <p>サイト訪問者を行動につなげる導線を設計します。</p>
+        </div>
+        <!-- 6. ECサイト：ショッピングカート -->
+        <div class="gl-card">
+          <div class="gl-card__ic" style="background:#E7EEF8;">
+            <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 4h3l2.5 12h11l2.5-8H8.5" stroke="#3E5478" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="12" cy="22" r="1.5" stroke="#3E5478" stroke-width="1.6"/>
+              <circle cx="19" cy="22" r="1.5" stroke="#3E5478" stroke-width="1.6"/>
+              <path d="M11 12h6M14 9v6" stroke="#3E5478" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>ECサイト・ネット販売の構築</h3>
+          <p>オンラインでの販売チャネルづくりも支援します。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 4. 流れ ===== -->
+  <section class="gl-sec gl-sec--yellow">
+    <div class="gl-wrap">
+      <div class="gl-head">
+        <span class="gl-eyebrow2">FLOW</span>
+        <h2 class="gl-h2">申請〜制作〜集客支援の流れ</h2>
+        <p class="gl-sub">「申請が難しそう」も、はじめの相談から伴走するのでご安心ください。</p>
+      </div>
+      <div class="gl-flow">
+        <div class="gl-flow__item">
+          <div class="gl-flow__no"><small>STEP</small><b>1</b></div>
+          <div><h3>無料相談・対象確認</h3><p>現状やご要望をうかがい、補助金が活用できそうか確認します。</p></div>
+        </div>
+        <div class="gl-flow__item">
+          <div class="gl-flow__no"><small>STEP</small><b>2</b></div>
+          <div><h3>補助金の選定・申請サポート</h3><p>使える制度を選び、申請書類の準備を一緒に進めます。</p></div>
+        </div>
+        <div class="gl-flow__item">
+          <div class="gl-flow__no"><small>STEP</small><b>3</b></div>
+          <div><h3>採択後にサイト・LPを制作</h3><p>採択を確認してから、落ち着いて制作に取りかかります。</p></div>
+        </div>
+        <div class="gl-flow__item">
+          <div class="gl-flow__no"><small>STEP</small><b>4</b></div>
+          <div><h3>公開・SEO/MEO設定</h3><p>公開後すぐ集客につながるよう初期設定まで対応します。</p></div>
+        </div>
+        <div class="gl-flow__item">
+          <div class="gl-flow__no"><small>STEP</small><b>5</b></div>
+          <div><h3>集客の継続サポート</h3><p>公開後の改善やWeb集客の運用も継続して伴走します。</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 5. 選ばれる理由 ===== -->
+  <section class="gl-sec">
+    <div class="gl-wrap">
+      <div class="gl-head">
+        <span class="gl-eyebrow2">WHY GOOD LAUGH</span>
+        <h2 class="gl-h2">グッドラフが選ばれる理由</h2>
+      </div>
+      <div class="gl-grid3">
+        <div class="gl-reason">
+          <div class="gl-reason__no">01</div>
+          <h3>申請から制作・集客まで一括</h3>
+          <p>補助金の相談・申請サポートからWeb制作、公開後の集客まで窓口ひとつで進められます。</p>
+        </div>
+        <div class="gl-reason">
+          <div class="gl-reason__no">02</div>
+          <h3>採択後の制作相談にも対応</h3>
+          <p>採択を確認してから制作を始められるので、安心して計画を立てられます。</p>
+        </div>
+        <div class="gl-reason">
+          <div class="gl-reason__no">03</div>
+          <h3>中小・店舗の支援に特化</h3>
+          <p>中小企業・店舗・小規模事業者のWeb制作と集客を数多くサポートしてきました。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. 支援事例 ===== -->
+  <section class="gl-sec gl-sec--orange-bg">
+    <div class="gl-wrap">
+      <div class="gl-head">
+        <span class="gl-eyebrow2">CASE</span>
+        <h2 class="gl-h2">支援事例・活用例</h2>
+        <p class="gl-sub">補助金を活用したWeb制作・集客支援の活用イメージです。</p>
+      </div>
+      <div class="gl-grid3">
+        <div class="gl-case">
+          <span class="gl-case__tag">製造業</span>
+          <div class="gl-case__rows">
+            <div class="gl-case__row"><span class="gl-case__k">課題</span><span class="gl-case__v">古いホームページで問い合わせ導線が弱い。</span></div>
+            <div class="gl-case__row"><span class="gl-case__k">支援内容</span><span class="gl-case__v">サイトリニューアル＋SEO導線整理。</span></div>
+            <div class="gl-case__row"><span class="gl-case__k">期待できる効果</span><span class="gl-case__v gl-case__v--eff">検索流入・問い合わせ導線の改善。</span></div>
+          </div>
+        </div>
+        <div class="gl-case">
+          <span class="gl-case__tag">店舗事業</span>
+          <div class="gl-case__rows">
+            <div class="gl-case__row"><span class="gl-case__k">課題</span><span class="gl-case__v">SNSやWeb集客を強化したい。</span></div>
+            <div class="gl-case__row"><span class="gl-case__k">支援内容</span><span class="gl-case__v">LP制作＋SNS導線設計。</span></div>
+            <div class="gl-case__row"><span class="gl-case__k">期待できる効果</span><span class="gl-case__v gl-case__v--eff">来店・問い合わせにつながる導線改善。</span></div>
+          </div>
+        </div>
+        <div class="gl-case">
+          <span class="gl-case__tag">士業・サービス業</span>
+          <div class="gl-case__rows">
+            <div class="gl-case__row"><span class="gl-case__k">課題</span><span class="gl-case__v">サービス内容が伝わりにくい。</span></div>
+            <div class="gl-case__row"><span class="gl-case__k">支援内容</span><span class="gl-case__v">サービスページ制作＋問い合わせCTA改善。</span></div>
+            <div class="gl-case__row"><span class="gl-case__k">期待できる効果</span><span class="gl-case__v gl-case__v--eff">相談前の不安解消と問い合わせ率改善。</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="gl-fineprint" style="text-align:center;">※掲載内容は補助金を活用したWeb施策の活用イメージであり、採択・支給や集客成果を保証するものではありません。</p>
+    </div>
+  </section>
+
+  <!-- ===== 7. FAQ ===== -->
+  <section class="gl-sec">
+    <div class="gl-wrap">
+      <div class="gl-head">
+        <span class="gl-eyebrow2">FAQ</span>
+        <h2 class="gl-h2">よくあるご質問</h2>
+      </div>
+      <div class="gl-faq">
+        <details class="gl-faq__item">
+          <summary><span class="gl-faq__q">Q</span>補助金は採択されますか？<span class="gl-faq__plus">+</span></summary>
+          <div class="gl-faq__a">採択を保証するものではありません。要件の確認や書類準備を丁寧にサポートし、採択の可能性を高めるお手伝いをします。</div>
+        </details>
+        <details class="gl-faq__item">
+          <summary><span class="gl-faq__q">Q</span>どんな補助金が対象になりますか？<span class="gl-faq__plus">+</span></summary>
+          <div class="gl-faq__a">事業内容や時期によって活用できる制度は異なります。お客様の状況をうかがったうえで、無料相談で最適な制度をご案内します。</div>
+        </details>
+        <details class="gl-faq__item">
+          <summary><span class="gl-faq__q">Q</span>申請が難しそうで不安です。<span class="gl-faq__plus">+</span></summary>
+          <div class="gl-faq__a">初めての方がほとんどです。必要書類の準備や申請手続きを一緒に進めますので、Webや書類が苦手な方もご安心ください。</div>
+        </details>
+        <details class="gl-faq__item">
+          <summary><span class="gl-faq__q">Q</span>自己負担はどのくらいになりますか？<span class="gl-faq__plus">+</span></summary>
+          <div class="gl-faq__a">補助率や上限額、活用する制度によって異なります。具体的な費用感は無料相談で個別にご案内します。</div>
+        </details>
+        <details class="gl-faq__item">
+          <summary><span class="gl-faq__q">Q</span>制作だけ・集客だけの相談でも大丈夫ですか？<span class="gl-faq__plus">+</span></summary>
+          <div class="gl-faq__a">もちろん可能です。ホームページ制作から公開後のSEO/MEO対策まで、必要な範囲でご相談いただけます。</div>
+        </details>
+        <details class="gl-faq__item">
+          <summary><span class="gl-faq__q">Q</span>対応エリアはどこまでですか？<span class="gl-faq__plus">+</span></summary>
+          <div class="gl-faq__a">全国オンライン対応が可能です。遠方の方もオンライン相談から制作・運用までご利用いただけます。</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. 最終CTA ===== -->
+  <section class="gl-sec gl-sec--navy">
+    <div class="gl-wrap">
+      <div class="gl-final">
+        <span class="gl-final__badge">補助金活用 × Web集客支援</span>
+        <h2>まずは自社が対象か、<br><mark>無料で確認</mark>してみませんか？</h2>
+        <p>申請サポートから制作後のSEO/MEO対策まで一括対応。ご相談は無料、全国オンライン対応です。</p>
+        <div class="gl-cta-wrap">
+          <a class="gl-btn" href="#">自社が対象か無料でチェックする <span class="gl-btn__arrow">→</span></a>
+          <a class="gl-final__textlink" href="#">無料相談したい方はこちら ›</a>
+        </div>
+        <p class="gl-reassure gl-reassure--light" style="text-align:center; margin-top:14px;">まずは対象確認だけでもOK。無理な営業はありません。</p>
+        <p class="gl-final__note">※本ページは補助金の採択・支給を保証するものではありません。制度の内容・対象・補助率・上限額は年度や事業内容など条件により異なります。詳細は無料相談にてご案内します。</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== 9. Footer ===== -->
+<footer class="gl-footer">
+  <div class="gl-footer__inner">
+    <div class="gl-footer__brand">
+      <img src="assets/logo-white.png" alt="Good Laugh">
+      <p>補助金を活用したホームページ制作・Web集客支援。中小企業・店舗・小規模事業者の「はじめのWeb」に伴走します。</p>
+    </div>
+    <div class="gl-footer__cols">
+      <div class="gl-footer__col">
+        <h4>サービス</h4>
+        <a href="#">ホームページ制作</a>
+        <a href="#">LP制作</a>
+        <a href="#">SEO/MEO対策</a>
+        <a href="#">補助金活用サポート</a>
+      </div>
+      <div class="gl-footer__col">
+        <h4>会社情報</h4>
+        <a href="#">グッドラフについて</a>
+        <a href="#">支援事例</a>
+        <a href="#">よくあるご質問</a>
+        <a href="#">お問い合わせ</a>
+      </div>
+      <div class="gl-footer__col">
+        <h4>その他</h4>
+        <a href="#">プライバシーポリシー</a>
+        <a href="#">特定商取引法に基づく表記</a>
+      </div>
+    </div>
+  </div>
+  <div class="gl-footer__bottom">
+    <span>© Good Laugh All Rights Reserved.</span>
+    <span>※補助金の採択・支給を保証するものではありません。</span>
+  </div>
+</footer>
+
+</body>
+</html>
