@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="./image-slot.js"></script>
+<style>
+  /* ---- Issues section ---- */
+  .issues-stage { margin:0 auto; max-width:1140px; }
+  .issues-top  { display:flex; justify-content:center; gap:22px; }
+  .issues-mid  { display:flex; justify-content:center; gap:22px; margin-top:48px; }
+  .ibubble {
+    position:relative; background:#fff; border-radius:18px;
+    padding:32px 22px 28px 22px; text-align:center;
+    box-shadow:0 28px 56px rgba(4,10,26,0.45);
+    flex-shrink:0; min-height:110px;
+  }
+  .ibubble-wide { width:320px; }
+  .ibubble-mid  { width:300px; }
+  .ibadge {
+    position:absolute; top:-20px; left:-14px;
+    width:58px; height:58px; border-radius:50%;
+    background:linear-gradient(180deg,#F47B2E,#E9692B);
+    color:#fff; font-weight:900; font-size:22px;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 10px 22px rgba(233,105,43,0.55);
+    z-index:2;
+  }
+  .itail {
+    position:absolute; bottom:-14px; left:50%; transform:translateX(-50%);
+    width:0; height:0;
+    border-left:14px solid transparent;
+    border-right:14px solid transparent;
+    border-top:15px solid #fff;
+  }
+  .itext-main { font-size:20px; font-weight:900; color:#1B2B49; line-height:1.75; margin:0; }
+  .itext-main .hl { font-size:27px; color:#E9692B; display:block; line-height:1.5; font-weight:900; }
+  .issues-bottom {
+    display:flex; flex-direction:column; align-items:center;
+    margin-top:32px;
+  }
+  .issues-person {
+    display:block; width:360px;
+    filter:drop-shadow(0 20px 36px rgba(4,10,26,0.52));
+  }
+  .issues-copy {
+    font-size:46px; font-weight:900; line-height:1.5;
+    color:#fff; text-align:center; letter-spacing:0.02em;
+    margin:8px auto 0; max-width:900px;
+  }
+  .issues-copy .hl-lg { color:#E9692B; font-size:52px; }
+  @media (max-width:1024px){
+    .ibubble-wide { width:270px; }
+    .ibubble-mid  { width:250px; }
+    .itext-main   { font-size:16px; }
+    .itext-main .hl { font-size:22px; }
+    .issues-person { width:300px; }
+    .issues-copy { font-size:38px; }
+    .issues-copy .hl-lg { font-size:44px; }
+  }
+  @media (max-width:860px){
+    .issues-top, .issues-mid { flex-direction:column; align-items:center; justify-content:center; gap:36px; }
+    .issues-mid   { margin-top:36px; }
+    .ibubble-wide, .ibubble-mid { width:100%; max-width:340px; }
+    .ibadge { left:-12px; }
+    .issues-person { width:260px; }
+    .issues-copy { font-size:28px; }
+    .issues-copy .hl-lg { font-size:34px; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  .sec { padding: 104px max(20px, calc((100vw - 1140px) / 2)); }
+  .wrap { max-width:1140px; margin:0 auto; }
+  .h2 { font-size:40px; line-height:1.5; font-weight:900; letter-spacing:0.02em; margin:0; }
+  .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .grid-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:22px; }
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
+  .flow { display:flex; align-items:stretch; gap:10px; }
+  .flow-step { flex:1; }
+  .flow-arrow { display:flex; align-items:center; color:#E9692B; flex-shrink:0; }
+
+  /* FV */
+  .fv-wrap { overflow:hidden; background:#111E35; padding-bottom:30px; }
+  .fv { position:relative; width:100%; min-height:780px; overflow:visible;
+        background:#cdd9e3 url('assets/fv-bg-meeting.png') center 26% / cover no-repeat;
+        clip-path:polygon(0 0, 100% 0, 100% 60%, 50% 100%, 0 60%); }
+  .fv-v { display:none; }
+  .fv-inner { position:relative; z-index:3; max-width:1140px; margin:0 auto; padding:60px 150px 0; text-align:center; line-height:1.5; }
+  .fv-h1 { font-size:55px; line-height:1.5; }
+  .fv-boxes { position:relative; z-index:10; width:100%; max-width:1140px;
+        margin:-100px auto 40px; padding:0 150px; display:flex; gap:24px;
+        align-items:center; justify-content:center; }
+  .fv-box { flex:1; background:#fff; border-radius:10px; padding:18px 20px; display:flex;
+        align-items:center; justify-content:center; text-align:center;
+        font-size:14px; font-weight:700; line-height:1.4; color:#16284A;
+        box-shadow:0 8px 24px rgba(15,28,54,0.18); }
+  .fv-boxes .fv-box:nth-child(2) { width:auto; height:auto; font-size:14px; margin-top:0; }
+  .fv-boxes-wrap { display:none; }
+
+  @media (max-width:1180px){
+    .fv-inner { padding-left:60px; padding-right:60px; }
+    .fv-boxes { padding-left:60px; padding-right:60px; }
+  }
+  @media (max-width:1024px){
+    .fv-h1 { font-size:44px; }
+    .h2 { font-size:32px; }
+    .grid-3 { grid-template-columns:repeat(2,1fr); }
+    .two-col { gap:36px; }
+  }
+  @media (max-width:860px){
+    .grid-2,.two-col { grid-template-columns:1fr; }
+    .flow { flex-direction:column; }
+    .flow-arrow { transform:rotate(90deg); justify-content:center; padding:4px 0; }
+    .nav-links { display:none !important; }
+  }
+  @media (max-width:768px){
+    body { overflow-x:hidden; }
+    .sec { padding:52px 20px !important; }
+    .h2 { font-size:24px !important; line-height:1.65; }
+
+    /* FV */
+    .fv { clip-path:none; min-height:0; background-position:center 30%; padding-bottom:40px !important; }
+    .fv-inner { padding:20px 20px 0 !important; }
+    .fv-h1 { font-size:25px !important; line-height:1.65; margin-bottom:16px !important; }
+    .fv-inner p { margin-bottom:20px !important; }
+    .fv-wrap { background:#111E35; padding-bottom:0; }
+    .fv-boxes { margin:0 !important; padding:16px 12px; gap:8px; }
+    .fv-box { border-radius:8px !important; padding:12px 10px; font-size:12px; }
+
+    /* ヘッダー */
+    .hdr-cta-text { display:inline; }
+    .nav-links { display:none !important; }
+
+    /* セクション02 two-col → 縦積み */
+    .two-col { display:flex !important; flex-direction:column !important; gap:24px !important; }
+    .sec02-cards { display:grid !important; grid-template-columns:1fr !important; gap:12px !important; }
+    .sec02-cards p { font-size:18px !important; font-weight:700 !important; white-space:nowrap !important; }
+
+    /* セクション03/04 grid-3 → 1カラム */
+    .grid-3 { display:grid !important; grid-template-columns:1fr !important; gap:16px !important; }
+    .grid-2 { display:grid !important; grid-template-columns:1fr !important; }
+
+    /* 料金プラン おすすめカードのズレ解除 */
+    .price-recommended { transform:none !important; margin-top:0 !important; }
+
+    /* FLOW → 縦積み・矢印↓ */
+    .flow { display:flex !important; flex-direction:column !important; gap:0 !important; align-items:stretch !important; }
+    .flow-step { width:100% !important; flex:none !important; }
+    .flow-arrow { transform:rotate(90deg) !important; justify-content:center !important; padding:8px 0 !important; }
+
+    /* FLOW V字clip-path → スマホでは解除 */
+    #flow { clip-path:none !important; padding-bottom:52px !important; }
+
+    /* ---- CONTENTSセクション SP ---- */
+    .grid-3 { grid-auto-rows:1fr !important; }
+    .content-card { padding:22px 20px 22px !important; border-radius:12px !important; display:flex !important; align-items:center !important; justify-content:center !important; }
+    .content-grid { width:300px !important; margin:0 auto !important; grid-template-columns:52px 1fr !important; gap:0 10px !important; }
+    .content-num { font-size:40px !important; line-height:1.1 !important; }
+    .content-grid h3 { font-size:18px !important; margin-bottom:10px !important; white-space:nowrap !important; }
+    .content-grid span[style*="font-size:15px"] { font-size:14px !important; white-space:nowrap !important; }
+
+    /* Footer */
+    .footer-grid { display:grid !important; grid-template-columns:1fr !important; gap:32px !important; }
+
+    /* ---- FV SP調整 ---- */
+    /* 3ボックスエリア */
+    .fv-boxes {
+      gap:8px !important;
+      padding:12px 20px 20px !important;
+      margin-top:28px !important;
+    }
+    .fv-box {
+      padding:12px 16px !important;
+      gap:0 !important;
+      justify-content:center !important;
+    }
+    .fv-box span { font-size:15px !important; white-space:normal !important; }
+    /* CTAボタン：幅320px以内・中央揃え */
+    .fv-inner a[href="#cta"] {
+      display:flex !important;
+      max-width:320px !important;
+      width:100% !important;
+      margin-left:auto !important;
+      margin-right:auto !important;
+      font-size:16px !important;
+      padding:16px 20px !important;
+      letter-spacing:0.02em !important;
+      justify-content:center !important;
+    }
+
+    /* ---- 採用でよくある悩み SP ---- */
+    /* セクション見出し縮小 */
+    section[data-screen-label="01 採用でよくある悩み"] > .wrap > h2 {
+      font-size:42px !important; text-align:center !important; }
+    .issues-stage h2 { font-size:28px !important; }
+
+    /* ステージ全体 */
+    .issues-stage {
+      padding-bottom:0 !important;
+      overflow-x:hidden !important;
+    }
+    /* 行コンテナ：縦積み・中央寄せ */
+    .issues-top, .issues-mid {
+      flex-direction:column !important;
+      align-items:center !important;
+      justify-content:flex-start !important;
+      gap:0 !important;
+      padding:0 !important;
+    }
+    /* 01バッジが上に切れないようissues-topの上部にスペース */
+    .issues-top { padding-top:28px !important; }
+    .issues-mid { margin-top:0 !important; padding-bottom:20px !important; overflow:visible !important; }
+
+    /* 03：バッジとテキストが重ならないよう上余白を広げ、高さも少し拡張 */
+    .issues-top .ibubble-wide:nth-child(3),
+    .issues-top .ibubble-mid:nth-child(3) {
+      padding-top: 38px !important;
+      min-height: 110px !important;
+    }
+
+    /* 吹き出し本体：幅詰め・交互オフセット */
+    .ibubble-wide,
+    .ibubble-mid {
+      width: calc(100% - 64px) !important;
+      max-width: 280px !important;
+      min-width: 0 !important;
+      box-sizing: border-box !important;
+      padding: 18px 16px 14px !important;
+      min-height: 0 !important;
+      margin-top: 36px !important;
+      border-radius: 14px !important;
+      flex-shrink: 0 !important;
+    }
+    /* 奇数（01,03,05）：左寄り */
+    .ibubble-wide:nth-child(odd),
+    .ibubble-mid:nth-child(odd) {
+      margin-left: 0 !important;
+      margin-right: auto !important;
+    }
+    /* 偶数（02,04）：右寄り */
+    .ibubble-wide:nth-child(even),
+    .ibubble-mid:nth-child(even) {
+      margin-left: auto !important;
+      margin-right: 0 !important;
+    }
+
+    /* issues-mid内はnth-childが1から再カウントされるため反転 */
+    .issues-mid .ibubble-wide:nth-child(odd),
+    .issues-mid .ibubble-mid:nth-child(odd) {
+      margin-left: auto !important;
+      margin-right: 0 !important;
+    }
+    .issues-mid .ibubble-wide:nth-child(even),
+    .issues-mid .ibubble-mid:nth-child(even) {
+      margin-left: 0 !important;
+      margin-right: auto !important;
+    }
+
+    /* 左列どうし(03,05)・右列(04) の縦間隔 */
+    .issues-top .ibubble-wide:nth-child(3),
+    .issues-top .ibubble-mid:nth-child(3),
+    .issues-mid .ibubble-wide:nth-child(2),
+    .issues-mid .ibubble-mid:nth-child(2) {
+      margin-top: 36px !important;
+    }
+    .issues-mid .ibubble-wide:nth-child(1),
+    .issues-mid .ibubble-mid:nth-child(1) {
+      margin-top: 36px !important;
+    }
+
+    /* テキスト */
+    .itext-main { font-size:15px !important; line-height:1.7 !important; }
+    .itext-main .hl { font-size:22px !important; line-height:1.5 !important; display:block !important; }
+
+    /* 番号バッジ：56px */
+    .ibadge {
+      top: -20px !important;
+      left: 12px !important;
+      width: 56px !important;
+      height: 56px !important;
+      font-size: 22px !important;
+    }
+
+    /* 人物写真・下部コピー */
+    .issues-person {
+      position:static !important; transform:none !important; top:auto !important;
+      width:200px !important; margin:28px auto 0 !important; display:block !important;
+    }
+    .issues-bottom {
+      display:flex !important; flex-direction:column !important;
+      align-items:center !important; margin-top:0 !important;
+    }
+    .issues-copy {
+      font-size:22px !important; margin-top:14px !important;
+      text-align:center !important; line-height:1.7 !important;
+    }
+    .issues-copy .hl-lg { font-size:26px !important; }
+    .issues-glow { display:none !important; }
+
+    /* 最終CTA見出し */
+    #contact h2 { font-size:38px !important; }
+  }
+</style>
+</helmet>
+
+<div style="font-family:'Noto Sans JP',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.85;color:#16284A;background:#fff;">
+
+  <!-- ===================== HEADER ===================== -->
+  <header style="position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.94);backdrop-filter:blur(8px);border-bottom:1px solid #EAEFF5;box-shadow:0 2px 14px rgba(15,28,54,0.04);">
+    <div style="max-width:1140px;margin:0 auto;padding:0 20px;height:74px;display:flex;align-items:center;justify-content:space-between;gap:24px;">
+      <a href="#" style="display:flex;align-items:center;text-decoration:none;">
+        <div style="height:44px;width:160px;background:url('assets/goodlaugh-logo.png') left center / contain no-repeat;"></div>
+      </a>
+      <nav class="nav-links" style="display:flex;align-items:center;gap:34px;">
+        <a href="#service" style="font-size:14.5px;font-weight:700;color:#33425E;text-decoration:none;" style-hover="color:#E9692B;">サービス内容</a>
+        <a href="#flow" style="font-size:14.5px;font-weight:700;color:#33425E;text-decoration:none;" style-hover="color:#E9692B;">導入の流れ</a>
+        <a href="#price" style="font-size:14.5px;font-weight:700;color:#33425E;text-decoration:none;" style-hover="color:#E9692B;">料金プラン</a>
+        <a href="#faq" style="font-size:14.5px;font-weight:700;color:#33425E;text-decoration:none;" style-hover="color:#E9692B;">よくある質問</a>
+      </nav>
+      <a class="hdr-cta-btn" href="#cta" style="display:inline-flex;align-items:center;gap:8px;background:#E9692B;color:#fff;font-weight:700;font-size:14px;padding:12px 22px;border-radius:7px;text-decoration:none;box-shadow:0 8px 18px rgba(233,105,43,0.3);white-space:nowrap;transition:filter .15s;" style-hover="filter:brightness(1.06);"><i data-lucide="message-circle" width="16" height="16" stroke-width="2.2"></i><span class="hdr-cta-text">採用導線の見直しを相談する</span></a>
+    </div>
+  </header>
+
+  <!-- ===================== FV ===================== -->
+  <div class="fv-wrap">
+  <section data-screen-label="FV ファーストビュー" class="fv">
+    <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(247,251,254,0.42) 0%,rgba(240,247,252,0.30) 45%,rgba(220,231,241,0.40) 100%);"></div>
+    <div style="position:absolute;inset:0;z-index:1;background:radial-gradient(70% 52% at 50% 33%,rgba(255,255,255,0.55) 0%,rgba(255,255,255,0) 70%);"></div>
+
+    <div class="fv-inner">
+      <div style="display:inline-block;position:relative;background:#16284A;color:#fff;font-size:17px;font-weight:700;letter-spacing:0.14em;padding:13px 30px;border-radius:6px;margin-bottom:30px;">
+        採用ブランディング支援
+        <span style="position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-top:10px solid #16284A;"></span>
+      </div>
+      <h1 class="fv-h1" style="font-weight:900;margin:0 0 26px;letter-spacing:0.02em;color:#16284A;text-shadow:0 1px 14px rgba(255,255,255,0.55);">「いい人が来ない」のは、<br><span style="color:#E9692B;">魅力が届いていない</span><br>からかもしれない。</h1>
+      <p style="font-size:17px;font-weight:500;color:#283C5C;margin:0 auto 38px;line-height:2.05;max-width:680px;text-shadow:0 1px 10px rgba(255,255,255,0.7);">求職者は応募前に、企業サイトや採用ページを見ています。<br>求人票だけでは伝わりにくい会社の強み・働く人・職場の雰囲気を整理し、<br>選ばれる採用導線をつくります。</p>
+      <a href="#cta" style="display:inline-flex;align-items:center;gap:14px;background:linear-gradient(180deg,#F47B2E 0%,#E9692B 100%);color:#fff;font-weight:700;font-size:22px;letter-spacing:0.04em;padding:23px 60px;border-radius:8px;text-decoration:none;box-shadow:0 16px 34px rgba(233,105,43,0.45);transition:transform .15s,box-shadow .15s,filter .15s;" style-hover="filter:brightness(1.05);transform:translateY(-2px);box-shadow:0 20px 40px rgba(233,105,43,0.52);">採用導線の見直しを相談する<i data-lucide="chevron-right" width="24" height="24" stroke-width="3"></i></a>
+    </div>
+
+  </section>
+
+  <div class="fv-boxes">
+    <div class="fv-box">会社の魅力を整理</div>
+    <div class="fv-box">働く人を見せる</div>
+    <div class="fv-box">応募導線を改善</div>
+  </div>
+  </div>
+
+  <!-- ===================== 01 採用でよくある悩み (navy, continues V) ===================== -->
+  <section data-screen-label="01 採用でよくある悩み" class="sec" style="background:#111E35;background-image:radial-gradient(60% 80% at 85% 8%,rgba(40,72,130,0.32),transparent 60%),radial-gradient(55% 70% at 8% 95%,rgba(28,55,100,0.28),transparent 62%);color:#fff;padding-top:64px;padding-bottom:60px;margin-top:-2px;position:relative;z-index:1;">
+    <div class="wrap" style="text-align:center;">
+      <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:20px;">
+        <span style="width:26px;height:2px;background:#E9692B;"></span>
+        <span style="font-size:13px;font-weight:700;letter-spacing:0.22em;color:#F2A06A;">COMMON ISSUES</span>
+        <span style="width:26px;height:2px;background:#E9692B;"></span>
+      </div>
+      <!-- 見出し -->
+      <h2 style="font-size:64px;font-weight:900;color:#fff;line-height:1.3;margin:0 0 16px;letter-spacing:0.02em;text-align:center;">採用で<br>よくある悩み</h2>
+      <p style="font-size:18px;color:#AFC0D8;margin:0 auto 52px;line-height:2;max-width:680px;">ひとつでも当てはまるなら、求人票だけに頼った採用が原因かもしれません。</p>
+
+      <!-- 吹き出し＋人物ステージ -->
+      <!-- 吹き出し群 -->
+      <div class="issues-stage">
+        <!-- top row 01 02 03 -->
+        <div class="issues-top">
+          <div class="ibubble ibubble-wide">
+            <span class="ibadge">01</span>
+            <p class="itext-main">求人を出しても<br><span class="hl">応募が来ない</span></p>
+            <span class="itail"></span>
+          </div>
+          <div class="ibubble ibubble-wide">
+            <span class="ibadge">02</span>
+            <p class="itext-main">採用サイトが<br><span class="hl">他社と差別化<br>できていない</span></p>
+            <span class="itail"></span>
+          </div>
+          <div class="ibubble ibubble-wide">
+            <span class="ibadge">03</span>
+            <p class="itext-main"><span class="hl">採用情報が古い、<br>または表面的すぎる</span></p>
+            <span class="itail"></span>
+          </div>
+        </div>
+        <!-- mid row 04 05 -->
+        <div class="issues-mid">
+          <div class="ibubble ibubble-mid">
+            <span class="ibadge">04</span>
+            <p class="itext-main">採用の<br><span class="hl">ミスマッチが多い</span></p>
+            <span class="itail"></span>
+          </div>
+          <div class="ibubble ibubble-mid">
+            <span class="ibadge">05</span>
+            <p class="itext-main">「会社の雰囲気が<br>伝わらない」<br><span class="hl">と言われる</span></p>
+            <span class="itail"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 人物＋アテンションコピー（1セット） -->
+      <div class="issues-bottom">
+        <img src="assets/person-worried.png" alt="採用に困る経営者イメージ" class="issues-person">
+        <p class="issues-copy">求人票だけでは、<br><span class="hl-lg">会社の空気感</span>までは伝わりません。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 02 なぜ採用ページが必要か (light) ===================== -->
+  <section data-screen-label="02 なぜ採用ページが必要か" class="sec" style="background:#fff;">
+    <div class="wrap two-col">
+      <!-- 左：求職者写真 -->
+      <div style="border-radius:16px;overflow:hidden;box-shadow:0 24px 50px rgba(15,28,54,0.13);aspect-ratio:4/3;">
+        <img src="assets/sec02-person.jpg" alt="求職者の様子" style="width:100%;height:100%;object-fit:cover;display:block;">
+      </div>
+      <!-- 右：テキスト＋カード -->
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+          <span style="width:26px;height:2px;background:#E9692B;"></span>
+          <span style="font-size:13px;font-weight:700;letter-spacing:0.2em;color:#E9692B;">WHY RECRUIT PAGE</span>
+        </div>
+        <h2 class="h2" style="color:#16284A;margin-bottom:24px;">求職者は、応募前に<br><span style="color:#E9692B;">会社を見ています。</span></h2>
+        <p style="font-size:16.5px;color:#56627A;line-height:2.1;margin:0 0 32px;">求人票を見たあと、求職者は企業サイトや採用ページを確認しています。そこで「自分に合いそうか」を判断してから、応募するかどうかを決めています。</p>
+        <!-- 四角カード3つ横並び -->
+        <div class="sec02-cards" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;min-width:0;">
+          <div style="background:#FDDFC8;border-radius:10px;padding:20px 14px 18px;text-align:center;">
+            <p style="font-size:15px;font-weight:500;color:#1B2B49;line-height:1.7;margin:0;">どんな人が働いているか</p>
+          </div>
+          <div style="background:#FDDFC8;border-radius:10px;padding:20px 14px 18px;text-align:center;">
+            <p style="font-size:15px;font-weight:500;color:#1B2B49;line-height:1.7;margin:0;">どんな雰囲気か伝わるか</p>
+          </div>
+          <div style="background:#FDDFC8;border-radius:10px;padding:20px 14px 18px;text-align:center;">
+            <p style="font-size:15px;font-weight:500;color:#1B2B49;line-height:1.7;margin:0;">自分に合いそうか判断できるか</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 03 グッドラフができること (light blue) ===================== -->
+  <section data-screen-label="03 グッドラフができること" id="service" class="sec" style="background:linear-gradient(180deg,#F4F8FC 0%,#EAF2FB 100%);">
+    <div class="wrap" style="text-align:center;">
+      <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:20px;">
+        <span style="width:26px;height:2px;background:#E9692B;"></span>
+        <span style="font-size:13px;font-weight:700;letter-spacing:0.22em;color:#E9692B;">WHAT WE DO</span>
+        <span style="width:26px;height:2px;background:#E9692B;"></span>
+      </div>
+      <h2 class="h2" style="color:#16284A;">グッドラフが、<span style="color:#E9692B;">採用ページと<br>導線を整えます。</span></h2>
+      <p style="font-size:16px;color:#56627A;margin:18px auto 50px;line-height:2;max-width:600px;">求人票だけでは伝わらない会社の魅力を、応募につながる形に整理します。</p>
+      <div class="grid-3" style="text-align:left;">
+        <div style="background:#fff;border:1px solid #E5EBF3;border-radius:16px;padding:34px 30px;box-shadow:0 14px 34px rgba(15,28,54,0.06);text-align:center;">
+          <h3 style="font-size:20px;font-weight:900;color:#16284A;margin:0 0 12px;">会社の魅力を整理</h3>
+          <p style="font-size:14.5px;font-weight:700;color:#56627A;line-height:1.95;margin:0;">求人票では伝わらない強みや価値観を言語化し、<br>求職者に伝わる形に整えます。</p>
+        </div>
+        <div style="background:#fff;border:1px solid #E5EBF3;border-radius:16px;padding:34px 30px;box-shadow:0 14px 34px rgba(15,28,54,0.06);text-align:center;">
+          <h3 style="font-size:20px;font-weight:900;color:#16284A;margin:0 0 12px;">働く人と職場の雰囲気を見せる</h3>
+          <p style="font-size:14.5px;font-weight:700;color:#56627A;line-height:1.95;margin:0;">社員の声や職場の写真で、入社後の働く<br>イメージが伝わるページにします。</p>
+        </div>
+        <div style="background:#fff;border:1px solid #E5EBF3;border-radius:16px;padding:34px 30px;box-shadow:0 14px 34px rgba(15,28,54,0.06);text-align:center;">
+          <h3 style="font-size:20px;font-weight:900;color:#16284A;margin:0 0 12px;">応募までの導線を改善</h3>
+          <p style="font-size:14.5px;font-weight:700;color:#56627A;line-height:1.95;margin:0;">企業サイトから応募・問い合わせまで、<br>求職者を迷わせない導線を設計します。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 04 採用ページで整理する内容 (light) ===================== -->
+  <section data-screen-label="04 採用ページで整理する内容" class="sec" style="background:#fff;">
+    <div class="wrap" style="text-align:center;">
+      <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:20px;">
+        <span style="width:26px;height:2px;background:#E9692B;"></span>
+        <span style="font-size:13px;font-weight:700;letter-spacing:0.22em;color:#E9692B;">CONTENTS</span>
+        <span style="width:26px;height:2px;background:#E9692B;"></span>
+      </div>
+      <h2 class="h2" style="color:#16284A;"><span style="color:#E9692B;">採用ページで伝えるべきこと</span>を、<br>整理して形にします。</h2>
+      <div class="grid-3" style="margin-top:50px;text-align:left;">
+
+        <!-- 01 -->
+        <div class="content-card" style="background:#F7FAFD;border:1.5px solid #E1EBF5;border-radius:16px;padding:32px 32px 28px;">
+          <div class="content-grid" style="display:grid;grid-template-columns:64px auto;align-items:start;gap:0 12px;width:fit-content;margin:0 auto;">
+            <span class="content-num" style="font-size:48px;font-weight:900;color:#E9692B;letter-spacing:0.06em;line-height:1;">01</span>
+            <div>
+              <h3 style="font-size:21px;font-weight:900;color:#16284A;margin:0 0 16px;line-height:1.55;">会社の魅力を整理する</h3>
+              <div style="display:flex;flex-direction:column;gap:12px;">
+                <div style="display:flex;align-items:flex-start;gap:10px;">
+                  <span style="width:6px;height:6px;border-radius:50%;background:#E9692B;flex-shrink:0;margin-top:8px;"></span>
+                  <span style="font-size:15px;font-weight:700;color:#33425E;line-height:1.7;">会社の強みの言語化</span>
+                </div>
+                <div style="display:flex;align-items:flex-start;gap:10px;">
+                  <span style="width:6px;height:6px;border-radius:50%;background:#E9692B;flex-shrink:0;margin-top:8px;"></span>
+                  <span style="font-size:15px;font-weight:700;color:#33425E;line-height:1.7;">求人票から採用ページへの導線</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 02 -->
+        <div class="content-card" style="background:#F7FAFD;border:1.5px solid #E1EBF5;border-radius:16px;padding:32px 32px 28px;">
+          <div class="content-grid" style="display:grid;grid-template-columns:64px auto;align-items:start;gap:0 12px;width:fit-content;margin:0 auto;">
+            <span class="content-num" style="font-size:48px;font-weight:900;color:#E9692B;letter-spacing:0.06em;line-height:1;">02</span>
+            <div>
+              <h3 style="font-size:21px;font-weight:900;color:#16284A;margin:0 0 16px;line-height:1.55;">働く人・職場の雰囲気を伝える</h3>
+              <div style="display:flex;flex-direction:column;gap:12px;">
+                <div style="display:flex;align-items:flex-start;gap:10px;">
+                  <span style="width:6px;height:6px;border-radius:50%;background:#E9692B;flex-shrink:0;margin-top:8px;"></span>
+                  <span style="font-size:15px;font-weight:700;color:#33425E;line-height:1.7;">社員・職場写真の見せ方</span>
+                </div>
+                <div style="display:flex;align-items:flex-start;gap:10px;">
+                  <span style="width:6px;height:6px;border-radius:50%;background:#E9692B;flex-shrink:0;margin-top:8px;"></span>
+                  <span style="font-size:15px;font-weight:700;color:#33425E;line-height:1.7;">スマホで見やすい採用ページ設計</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 03 -->
+        <div class="content-card" style="background:#F7FAFD;border:1.5px solid #E1EBF5;border-radius:16px;padding:32px 32px 28px;">
+          <div class="content-grid" style="display:grid;grid-template-columns:64px auto;align-items:start;gap:0 12px;width:fit-content;margin:0 auto;">
+            <span class="content-num" style="font-size:48px;font-weight:900;color:#E9692B;letter-spacing:0.06em;line-height:1;">03</span>
+            <div>
+              <h3 style="font-size:21px;font-weight:900;color:#16284A;margin:0 0 16px;line-height:1.55;">応募につながる導線を整える</h3>
+              <div style="display:flex;flex-direction:column;gap:12px;">
+                <div style="display:flex;align-items:flex-start;gap:10px;">
+                  <span style="width:6px;height:6px;border-radius:50%;background:#E9692B;flex-shrink:0;margin-top:8px;"></span>
+                  <span style="font-size:15px;font-weight:700;color:#33425E;line-height:1.7;">応募前の不安解消コンテンツ</span>
+                </div>
+                <div style="display:flex;align-items:flex-start;gap:10px;">
+                  <span style="width:6px;height:6px;border-radius:50%;background:#E9692B;flex-shrink:0;margin-top:8px;"></span>
+                  <span style="font-size:15px;font-weight:700;color:#33425E;line-height:1.7;">問い合わせ・応募CTAの改善</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 05 制作の流れ (light blue) ===================== -->
+  <section data-screen-label="05 制作の流れ" id="flow" class="sec" style="background:#DCF0F8;position:relative;padding-bottom:128px;clip-path:polygon(0 0,100% 0,100% calc(100% - 56px),50% 100%,0 calc(100% - 56px));">
+    <div class="wrap" style="text-align:center;">
+      <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:20px;">
+        <span style="width:26px;height:2px;background:#E9692B;"></span>
+        <span style="font-size:13px;font-weight:700;letter-spacing:0.22em;color:#E9692B;">FLOW</span>
+        <span style="width:26px;height:2px;background:#E9692B;"></span>
+      </div>
+      <h2 class="h2" style="color:#16284A;">ご相談から公開までの流れ</h2>
+      <div class="flow" style="margin-top:52px;text-align:center;">
+        <div class="flow-step" style="background:#fff;border:1px solid #E5EBF3;border-radius:14px;padding:28px 16px;box-shadow:0 10px 26px rgba(15,28,54,0.05);"><div style="width:46px;height:46px;border-radius:50%;background:#EAF2FB;color:#16284A;font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">1</div><div style="font-size:15px;font-weight:700;color:#16284A;line-height:1.6;">採用課題の<br>ヒアリング</div></div>
+        <div class="flow-arrow"><i data-lucide="chevron-right" width="38" height="38" stroke-width="3"></i></div>
+        <div class="flow-step" style="background:#fff;border:1px solid #E5EBF3;border-radius:14px;padding:28px 16px;box-shadow:0 10px 26px rgba(15,28,54,0.05);"><div style="width:46px;height:46px;border-radius:50%;background:#EAF2FB;color:#16284A;font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">2</div><div style="font-size:15px;font-weight:700;color:#16284A;line-height:1.6;">現状サイト・<br>求人票の確認</div></div>
+        <div class="flow-arrow"><i data-lucide="chevron-right" width="38" height="38" stroke-width="3"></i></div>
+        <div class="flow-step" style="background:#fff;border:1px solid #E5EBF3;border-radius:14px;padding:28px 16px;box-shadow:0 10px 26px rgba(15,28,54,0.05);"><div style="width:46px;height:46px;border-radius:50%;background:#EAF2FB;color:#16284A;font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">3</div><div style="font-size:15px;font-weight:700;color:#16284A;line-height:1.6;">採用ページの<br>構成設計</div></div>
+        <div class="flow-arrow"><i data-lucide="chevron-right" width="38" height="38" stroke-width="3"></i></div>
+        <div class="flow-step" style="background:#fff;border:1px solid #E5EBF3;border-radius:14px;padding:28px 16px;box-shadow:0 10px 26px rgba(15,28,54,0.05);"><div style="width:46px;height:46px;border-radius:50%;background:#EAF2FB;color:#16284A;font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">4</div><div style="font-size:15px;font-weight:700;color:#16284A;line-height:1.6;">デザイン・<br>制作</div></div>
+        <div class="flow-arrow"><i data-lucide="chevron-right" width="38" height="38" stroke-width="3"></i></div>
+        <div class="flow-step" style="background:#E9692B;border:1px solid #E9692B;border-radius:14px;padding:28px 16px;box-shadow:0 14px 30px rgba(233,105,43,0.35);"><div style="width:46px;height:46px;border-radius:50%;background:#fff;color:#16284A;font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">5</div><div style="font-size:15px;font-weight:700;color:#fff;line-height:1.6;">公開後の<br>改善提案</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 06 料金プラン (light) ===================== -->
+  <section data-screen-label="06 料金プラン" id="price" class="sec" style="background:#fff;">
+    <div class="wrap" style="text-align:center;">
+      <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:20px;">
+        <span style="width:26px;height:2px;background:#E9692B;"></span>
+        <span style="font-size:13px;font-weight:700;letter-spacing:0.22em;color:#E9692B;">PRICE</span>
+        <span style="width:26px;height:2px;background:#E9692B;"></span>
+      </div>
+      <h2 class="h2" style="color:#16284A;">料金プラン</h2>
+      <p style="font-size:16px;color:#56627A;margin:18px auto 50px;line-height:2;max-width:600px;">課題やご予算に合わせて、最適なプランをご提案します。</p>
+      <div class="grid-3" style="text-align:left;align-items:stretch;">
+        <div style="background:#fff;border:1px solid #E5EBF3;border-radius:18px;padding:36px 32px;display:flex;flex-direction:column;">
+          <div style="font-size:15px;font-weight:700;color:#8A97AD;letter-spacing:0.04em;margin-bottom:8px;">ライト</div>
+          <div style="font-size:14px;color:#56627A;margin-bottom:18px;line-height:1.7;">まずは現状を診断したい方へ</div>
+          <div style="font-size:32px;font-weight:900;color:#16284A;margin-bottom:24px;">要相談</div>
+          <div style="display:flex;flex-direction:column;gap:12px;flex:1;">
+            <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#3C4A66;"><i data-lucide="check" width="18" height="18" stroke-width="3" style="color:#E9692B;flex-shrink:0;"></i>求人票・採用ページの見直し相談</div>
+            <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#3C4A66;"><i data-lucide="check" width="18" height="18" stroke-width="3" style="color:#E9692B;flex-shrink:0;"></i>現状診断レポート</div>
+            <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#3C4A66;"><i data-lucide="check" width="18" height="18" stroke-width="3" style="color:#E9692B;flex-shrink:0;"></i>改善ポイントの提示</div>
+          </div>
+          <a href="#cta" style="display:block;text-align:center;margin-top:28px;border:1.5px solid #16284A;color:#16284A;font-weight:700;font-size:15px;padding:14px;border-radius:9px;text-decoration:none;transition:background .15s;" style-hover="background:#F1F5FB;">相談する</a>
+        </div>
+        <div class="price-recommended" style="background:#16284A;border-radius:18px;padding:36px 32px;display:flex;flex-direction:column;position:relative;box-shadow:0 24px 50px rgba(15,28,54,0.25);transform:translateY(-8px);">
+          <span style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:#E9692B;color:#fff;font-size:12.5px;font-weight:700;padding:6px 18px;border-radius:999px;white-space:nowrap;">おすすめ</span>
+          <div style="font-size:15px;font-weight:700;color:#F2A06A;letter-spacing:0.04em;margin-bottom:8px;">スタンダード</div>
+          <div style="font-size:14px;color:#AFC0D8;margin-bottom:18px;line-height:1.7;">採用ページを一式そろえたい方へ</div>
+          <div style="font-size:32px;font-weight:900;color:#fff;margin-bottom:24px;">要相談</div>
+          <div style="display:flex;flex-direction:column;gap:12px;flex:1;">
+            <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#E6EDF6;"><i data-lucide="check" width="18" height="18" stroke-width="3" style="color:#F2A06A;flex-shrink:0;"></i>採用ページ制作一式</div>
+            <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#E6EDF6;"><i data-lucide="check" width="18" height="18" stroke-width="3" style="color:#F2A06A;flex-shrink:0;"></i>会社の魅力の言語化</div>
+            <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#E6EDF6;"><i data-lucide="check" width="18" height="18" stroke-width="3" style="color:#F2A06A;flex-shrink:0;"></i>写真・応募導線の設計</div>
+            <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#E6EDF6;"><i data-lucide="check" width="18" height="18" stroke-width="3" style="color:#F2A06A;flex-shrink:0;"></i>公開後の初期サポート</div>
+          </div>
+          <a href="#cta" style="display:block;text-align:center;margin-top:28px;background:#E9692B;color:#fff;font-weight:700;font-size:15px;padding:14px;border-radius:9px;text-decoration:none;transition:filter .15s;" style-hover="filter:brightness(1.07);">相談する</a>
+        </div>
+        <div style="background:#fff;border:1px solid #E5EBF3;border-radius:18px;padding:36px 32px;display:flex;flex-direction:column;">
+          <div style="font-size:15px;font-weight:700;color:#8A97AD;letter-spacing:0.04em;margin-bottom:8px;">改善サポート</div>
+          <div style="font-size:14px;color:#56627A;margin-bottom:18px;line-height:1.7;">既存ページを改善したい方へ</div>
+          <div style="font-size:32px;font-weight:900;color:#16284A;margin-bottom:24px;">要相談</div>
+          <div style="display:flex;flex-direction:column;gap:12px;flex:1;">
+            <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#3C4A66;"><i data-lucide="check" width="18" height="18" stroke-width="3" style="color:#E9692B;flex-shrink:0;"></i>既存採用ページの改善</div>
+            <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#3C4A66;"><i data-lucide="check" width="18" height="18" stroke-width="3" style="color:#E9692B;flex-shrink:0;"></i>応募導線の最適化</div>
+            <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#3C4A66;"><i data-lucide="check" width="18" height="18" stroke-width="3" style="color:#E9692B;flex-shrink:0;"></i>定期的な改善提案</div>
+          </div>
+          <a href="#cta" style="display:block;text-align:center;margin-top:28px;border:1.5px solid #16284A;color:#16284A;font-weight:700;font-size:15px;padding:14px;border-radius:9px;text-decoration:none;transition:background .15s;" style-hover="background:#F1F5FB;">相談する</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 08 よくある質問 (light) ===================== -->
+  <section data-screen-label="08 よくある質問" id="faq" class="sec" style="background:#fff;">
+    <div class="wrap" style="max-width:840px;">
+      <div style="text-align:center;">
+        <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:20px;">
+          <span style="width:26px;height:2px;background:#E9692B;"></span>
+          <span style="font-size:13px;font-weight:700;letter-spacing:0.22em;color:#E9692B;">FAQ</span>
+          <span style="width:26px;height:2px;background:#E9692B;"></span>
+        </div>
+        <h2 class="h2" style="color:#16284A;margin-bottom:46px;">よくある質問</h2>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <details style="background:#F7FAFD;border:1px solid #E5EDF5;border-radius:12px;padding:4px 24px;" open><summary style="list-style:none;cursor:pointer;display:flex;align-items:center;gap:14px;padding:18px 0;font-size:16px;font-weight:700;color:#16284A;"><span style="color:#E9692B;font-weight:900;flex-shrink:0;">Q.</span>採用ページがまだなくても相談できますか？</summary><p style="margin:0 0 18px;padding-left:30px;font-size:14.5px;color:#56627A;line-height:1.95;">はい。現状の求人票やサイトを拝見し、必要な構成からご提案します。ゼロからのご相談も歓迎です。</p></details>
+        <details style="background:#F7FAFD;border:1px solid #E5EDF5;border-radius:12px;padding:4px 24px;"><summary style="list-style:none;cursor:pointer;display:flex;align-items:center;gap:14px;padding:18px 0;font-size:16px;font-weight:700;color:#16284A;"><span style="color:#E9692B;font-weight:900;flex-shrink:0;">Q.</span>求人票だけの相談もできますか？</summary><p style="margin:0 0 18px;padding-left:30px;font-size:14.5px;color:#56627A;line-height:1.95;">可能です。求人票の見せ方や訴求内容の整理だけでもご相談いただけます。</p></details>
+        <details style="background:#F7FAFD;border:1px solid #E5EDF5;border-radius:12px;padding:4px 24px;"><summary style="list-style:none;cursor:pointer;display:flex;align-items:center;gap:14px;padding:18px 0;font-size:16px;font-weight:700;color:#16284A;"><span style="color:#E9692B;font-weight:900;flex-shrink:0;">Q.</span>写真素材がない場合も対応できますか？</summary><p style="margin:0 0 18px;padding-left:30px;font-size:14.5px;color:#56627A;line-height:1.95;">撮影のディレクションや素材の選定からサポートします。手元の素材を活かす方法もご提案します。</p></details>
+        <details style="background:#F7FAFD;border:1px solid #E5EDF5;border-radius:12px;padding:4px 24px;"><summary style="list-style:none;cursor:pointer;display:flex;align-items:center;gap:14px;padding:18px 0;font-size:16px;font-weight:700;color:#16284A;"><span style="color:#E9692B;font-weight:900;flex-shrink:0;">Q.</span>公開後の改善も相談できますか？</summary><p style="margin:0 0 18px;padding-left:30px;font-size:14.5px;color:#56627A;line-height:1.95;">公開後の応募状況を見ながら、継続的に改善提案を行います。作って終わりにはしません。</p></details>
+        <details style="background:#F7FAFD;border:1px solid #E5EDF5;border-radius:12px;padding:4px 24px;"><summary style="list-style:none;cursor:pointer;display:flex;align-items:center;gap:14px;padding:18px 0;font-size:16px;font-weight:700;color:#16284A;"><span style="color:#E9692B;font-weight:900;flex-shrink:0;">Q.</span>スマホ対応できますか？</summary><p style="margin:0 0 18px;padding-left:30px;font-size:14.5px;color:#56627A;line-height:1.95;">すべてのページをスマホ表示前提で設計します。求職者の多くがスマホで閲覧するためです。</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 09 最終CTA ===================== -->
+  <section data-screen-label="09 最終CTA" id="contact" style="background:#111E35;padding:64px max(20px,calc((100vw - 1140px)/2));text-align:center;">
+    <div style="max-width:1140px;margin:0 auto;">
+      <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:24px;">
+        <span style="width:26px;height:2px;background:#E9692B;"></span>
+        <span style="font-size:13px;font-weight:700;letter-spacing:0.22em;color:#F2A06A;">CONTACT</span>
+        <span style="width:26px;height:2px;background:#E9692B;"></span>
+      </div>
+      <h2 style="font-size:44px;font-weight:900;color:#fff;line-height:1.5;letter-spacing:0.02em;margin:0 0 24px;">採用ページ・<br>応募導線の<br>見直しを<br>相談しませんか？</h2>
+      <p style="font-size:19px;font-weight:700;color:#C8D8EC;line-height:2.1;margin:0 auto 44px;max-width:660px;">求人媒体に掲載するだけでは、<br>会社の魅力や職場の雰囲気までは伝わりにくいものです。<br>採用ページや企業サイトの見せ方、応募までの導線を整えることで、<br>求職者に選ばれやすい採用導線をつくります。</p>
+      <a href="#contact-form" style="display:inline-flex;align-items:center;gap:14px;background:linear-gradient(180deg,#F47B2E 0%,#E9692B 100%);color:#fff;font-weight:700;font-size:21px;letter-spacing:0.04em;padding:24px 64px;border-radius:9px;text-decoration:none;transition:filter .15s,transform .15s;" style-hover="filter:brightness(1.06);transform:translateY(-2px);">採用導線の見直しを相談する<i data-lucide="chevron-right" width="23" height="23" stroke-width="3"></i></a>
+      <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:36px;margin-top:32px;">
+        <span style="font-size:21px;font-weight:900;color:#fff;display:flex;align-items:center;gap:12px;"><span style="width:12px;height:12px;border-radius:50%;background:#E9692B;flex-shrink:0;"></span>初回相談無料</span>
+        <span style="font-size:21px;font-weight:900;color:#fff;display:flex;align-items:center;gap:12px;"><span style="width:12px;height:12px;border-radius:50%;background:#E9692B;flex-shrink:0;"></span>オンライン相談可</span>
+        <span style="font-size:21px;font-weight:900;color:#fff;display:flex;align-items:center;gap:12px;"><span style="width:12px;height:12px;border-radius:50%;background:#E9692B;flex-shrink:0;"></span>無理な営業はありません</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 10 お問い合わせフォーム ===================== -->
+  <section data-screen-label="10 お問い合わせフォーム" id="contact-form" style="background:#F7FAFD;padding:96px max(20px,calc((100vw - 1140px)/2));">
+    <div style="max-width:680px;margin:0 auto;">
+      <div style="text-align:center;margin-bottom:44px;">
+        <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:20px;">
+          <span style="width:26px;height:2px;background:#E9692B;"></span>
+          <span style="font-size:13px;font-weight:700;letter-spacing:0.22em;color:#E9692B;">FORM</span>
+          <span style="width:26px;height:2px;background:#E9692B;"></span>
+        </div>
+        <h2 style="font-size:32px;font-weight:900;color:#16284A;line-height:1.5;margin:0 0 16px;">お問い合わせ・無料相談フォーム</h2>
+        <p style="font-size:15.5px;color:#56627A;line-height:1.95;margin:0;">採用ページや応募導線について、現在のお悩みをお聞かせください。<br>内容を確認のうえ、折り返しご連絡いたします。</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:22px;">
+        <div>
+          <label style="display:block;font-size:14px;font-weight:700;color:#33425E;margin-bottom:8px;">会社名 <span style="color:#E9692B;">*</span></label>
+          <input type="text" placeholder="株式会社〇〇" style="width:100%;padding:15px 18px;border:1.5px solid #D6E0EC;border-radius:8px;font-size:16px;color:#16284A;font-family:inherit;box-sizing:border-box;outline:none;background:#fff;">
+        </div>
+        <div>
+          <label style="display:block;font-size:14px;font-weight:700;color:#33425E;margin-bottom:8px;">お名前 <span style="color:#E9692B;">*</span></label>
+          <input type="text" placeholder="山田 太郎" style="width:100%;padding:15px 18px;border:1.5px solid #D6E0EC;border-radius:8px;font-size:16px;color:#16284A;font-family:inherit;box-sizing:border-box;outline:none;background:#fff;">
+        </div>
+        <div>
+          <label style="display:block;font-size:14px;font-weight:700;color:#33425E;margin-bottom:8px;">メールアドレス <span style="color:#E9692B;">*</span></label>
+          <input type="email" placeholder="info@example.com" style="width:100%;padding:15px 18px;border:1.5px solid #D6E0EC;border-radius:8px;font-size:16px;color:#16284A;font-family:inherit;box-sizing:border-box;outline:none;background:#fff;">
+        </div>
+        <div>
+          <label style="display:block;font-size:14px;font-weight:700;color:#33425E;margin-bottom:8px;">相談内容</label>
+          <textarea placeholder="採用ページの改善について相談したい、など" rows="5" style="width:100%;padding:15px 18px;border:1.5px solid #D6E0EC;border-radius:8px;font-size:16px;color:#16284A;font-family:inherit;box-sizing:border-box;outline:none;resize:vertical;background:#fff;"></textarea>
+        </div>
+        <button type="button" style="width:100%;background:linear-gradient(180deg,#F47B2E 0%,#E9692B 100%);color:#fff;font-weight:700;font-size:18px;padding:20px;border:none;border-radius:9px;cursor:pointer;font-family:inherit;letter-spacing:0.04em;transition:filter .15s;" style-hover="filter:brightness(1.07);">送信する</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 11 Footer ===================== -->
+  <footer data-screen-label="09 Footer" style="background:#0E1B30;color:#fff;padding:64px max(20px, calc((100vw - 1140px) / 2)) 32px;">
+    <div class="wrap footer-grid" style="display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:48px;">
+      <!-- ロゴ＋キャッチ -->
+      <div>
+        <div style="margin-bottom:18px;">
+          <img src="assets/goodlaugh-logo-white.png" alt="Good Laugh" style="height:44px;width:auto;display:block;">
+        </div>
+        <p style="font-size:13.5px;color:#8DA0BC;line-height:1.9;margin:0 0 20px;">採用ブランディング支援・採用ページ制作・応募導線改善で、求職者に選ばれる採用をつくります。</p>
+        <a href="#contact" style="display:inline-flex;align-items:center;gap:8px;background:#E9692B;color:#fff;font-weight:700;font-size:13.5px;padding:12px 20px;border-radius:7px;text-decoration:none;" style-hover="filter:brightness(1.06);">無料相談はこちら</a>
+      </div>
+      <!-- サービス -->
+      <div>
+        <div style="font-size:12px;font-weight:700;color:#AFC0D8;letter-spacing:0.1em;margin-bottom:16px;">SERVICE</div>
+        <div style="display:flex;flex-direction:column;gap:11px;">
+          <a href="#service" style="font-size:13.5px;color:#9FB0C9;text-decoration:none;" style-hover="color:#fff;">サービス内容</a>
+          <a href="#flow" style="font-size:13.5px;color:#9FB0C9;text-decoration:none;" style-hover="color:#fff;">導入の流れ</a>
+          <a href="#price" style="font-size:13.5px;color:#9FB0C9;text-decoration:none;" style-hover="color:#fff;">料金プラン</a>
+          <a href="#faq" style="font-size:13.5px;color:#9FB0C9;text-decoration:none;" style-hover="color:#fff;">よくある質問</a>
+          <a href="#contact" style="font-size:13.5px;color:#9FB0C9;text-decoration:none;" style-hover="color:#fff;">無料相談・お問い合わせ</a>
+        </div>
+      </div>
+      <!-- 会社情報 -->
+      <div>
+        <div style="font-size:12px;font-weight:700;color:#AFC0D8;letter-spacing:0.1em;margin-bottom:16px;">COMPANY</div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="font-size:13.5px;color:#9FB0C9;line-height:1.75;"><span style="display:block;color:#fff;font-weight:700;margin-bottom:2px;">運営会社</span>株式会社グッドラフ</div>
+          <div style="font-size:13.5px;color:#9FB0C9;line-height:1.75;"><span style="display:block;color:#fff;font-weight:700;margin-bottom:2px;">所在地</span>〒XXX-XXXX 大阪府〇〇市〇〇</div>
+          <div style="font-size:13.5px;color:#9FB0C9;line-height:1.75;"><span style="display:block;color:#fff;font-weight:700;margin-bottom:2px;">事業内容</span>採用ブランディング支援・採用ページ制作・採用サイト改善</div>
+          <div style="display:flex;gap:16px;margin-top:4px;">
+            <a href="#" style="font-size:13px;color:#9FB0C9;text-decoration:none;" style-hover="color:#fff;">公式サイト</a>
+            <a href="#" style="font-size:13px;color:#9FB0C9;text-decoration:none;" style-hover="color:#fff;">プライバシーポリシー</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="max-width:1140px;margin:44px auto 0;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);font-size:12.5px;color:#5A6E8A;">© 2024 Good Laugh Inc. All rights reserved.</div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() { this.renderIcons(); }
+  componentDidUpdate() { this.renderIcons(); }
+  renderIcons() {
+    let tries = 0;
+    const run = () => {
+      if (window.lucide) { window.lucide.createIcons(); return; }
+      if (tries++ < 60) setTimeout(run, 100);
+    };
+    run();
+  }
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
